@@ -251,10 +251,11 @@ function selectClass(className) {
 }
 
 function showWheelModal() {
+    const selectedClass = document.getElementById('selected-class').textContent;
     document.getElementById('wheel-modal').style.display = 'block';
     setTimeout(() => {
         if (typeof initWheel === 'function') {
-            initWheel();
+            initWheel(selectedClass);
         }
     }, 300);
 }

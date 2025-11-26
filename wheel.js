@@ -1,5 +1,5 @@
 class WheelOfFortune {
-    constructor() {
+    constructor(classLetter) {
         this.canvas = document.getElementById('wheel-canvas');
         this.ctx = this.canvas.getContext('2d');
         this.spinButton = document.getElementById('spin-button');
@@ -7,19 +7,40 @@ class WheelOfFortune {
         this.centerY = this.canvas.height / 2;
         this.radius = Math.min(this.centerX, this.centerY) - 20;
         
-        this.names = [
-            "Антон", "Мирослава", "Федя", "Маша", "Борис", "Егор", "Софья", "Месси", 
-            "Лиза", "Даник К.", "Сергей", "Иван Золо", "Олимпиадник", "Кирил М.", "Роман", "Санечка", 
-            "Аня", "Матвей С.", "Даник С.", "Кирил С.", "Матвей Ф.", "Паша", "Арина", 
-            "Влад", "Глеб", "Иван Б."
-        ];
+        this.classData = {
+            'А': {
+                names: [
+                    "Антон", "Мирослава", "Федя", "Маша", "Борис", "Егор", "Софья", "Месси", 
+                    "Лиза", "Даник К.", "Сергей", "Иван Золо", "Олимпиадник", "Кирил М.", "Роман", "Санечка", 
+                    "Аня", "Матвей С.", "Даник С.", "Кирил С.", "Матвей Ф.", "Паша", "Арина", 
+                    "Влад", "Глеб", "Иван Б."
+                ],
+                colors: ['#BD4932', '#FFFAD5', '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD']
+            },
+            'Б': {
+                names: [
+                    "Барановская Дарья", "Силич Елизавета", "Папельская Полина", "Анкудинова Ксения", "Бука Ксения", 
+                    "Дятко Эмилия", "Язков Дмитрий", "Гайдук Никита", "Тарбаева Дарья", "Войтехович Глафира",
+                    "Домашкевич Елизавета", "Ахремчик Юлиана", "Михницкая Вера", "Пацей Анна", "Колесник Николай",
+                    "Курсевич Ян", "Севрюкова Анна", "Кунцевич Ирина", "Макаревич Валерия", "Жилко Анастасия",
+                    "Веремейчик Всеволод", "Лозюк Марта", "Пискунович Эвелина"
+                ],
+                colors: ['#FFA07A', '#20B2AA', '#778899', '#9370DB', '#3CB371', '#FFD700', '#FF69B4', '#1E90FF']
+            }
+        };
         
-        this.colors = ['#BD4932', '#FFFAD5'];
+        this.currentClass = classLetter || 'А';
+        this.names = this.classData[this.currentClass].names;
+        this.colors = this.classData[this.currentClass].colors;
+        
         this.angle = 0;
         this.spinning = false;
         this.rotationSpeed = 0;
-        this.friction = 0.98;
+        this.friction = 0.985;
         this.minSpeed = 0.05;
+        this.spinDuration = 2000;
+        this.showWinnerDuration = 2000;
+        this.spinStartTime = 0;
         
         this.init();
     }
@@ -49,6 +70,14 @@ class WheelOfFortune {
         window.addEventListener('resize', () => {
             setTimeout(() => this.setupCanvas(), 100);
         });
+    }
+    
+    updateClass(classLetter) {
+        this.currentClass = classLetter;
+        this.names = this.classData[this.currentClass].names;
+        this.colors = this.classData[this.currentClass].colors;
+        this.angle = 0;
+        this.drawWheel();
     }
     
     drawWheel() {
@@ -82,7 +111,7 @@ class WheelOfFortune {
             ctx.translate(this.radius * 0.75, 0);
             
             ctx.fillStyle = i % 2 === 0 ? '#FFFAD5' : '#401911';
-            const fontSize = Math.max(14, this.radius * 0.08);
+            const fontSize = Math.max(12, this.radius * 0.07);
             ctx.font = `bold ${fontSize}px Arial`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
@@ -91,7 +120,7 @@ class WheelOfFortune {
             const maxWidth = this.radius * 0.4;
             
             if (ctx.measureText(name).width > maxWidth) {
-                ctx.font = `bold ${fontSize * 0.8}px Arial`;
+                ctx.font = `bold ${fontSize * 0.7}px Arial`;
             }
             
             ctx.fillText(name, 0, 0);
@@ -136,7 +165,8 @@ class WheelOfFortune {
         if (this.spinning) return;
         
         this.spinning = true;
-        this.rotationSpeed = 8 + Math.random() * 12;
+        this.spinStartTime = Date.now();
+        this.rotationSpeed = 15 + Math.random() * 10;
         
         this.spinButton.style.display = 'none';
         
@@ -146,17 +176,18 @@ class WheelOfFortune {
     animate() {
         if (!this.spinning) return;
         
-        this.angle += this.rotationSpeed * 0.05;
-        this.rotationSpeed *= this.friction;
+        const currentTime = Date.now();
+        const elapsed = currentTime - this.spinStartTime;
         
-        this.drawWheel();
-        
-        if (this.rotationSpeed < this.minSpeed) {
+        if (elapsed < this.spinDuration) {
+            this.angle += this.rotationSpeed * 0.05;
+            this.rotationSpeed *= this.friction;
+            this.drawWheel();
+            requestAnimationFrame(() => this.animate());
+        } else {
             this.rotationSpeed = 0;
             this.spinning = false;
             this.onSpinComplete();
-        } else {
-            requestAnimationFrame(() => this.animate());
         }
     }
     
@@ -182,7 +213,7 @@ class WheelOfFortune {
                 <div class="winner-title">${isWinner ? 'ПОБЕДИТЕЛЬ!' : 'ВЫБРАНО:'}</div>
                 <div class="winner-name">${name}</div>
                 <div class="winner-message">${isWinner ? 'Поздравляем с победой! 🎉' : 'Удачи в следующий раз! ✨'}</div>
-                <div class="winner-timer">Исчезнет через <span class="timer-count">5</span> сек</div>
+                <div class="winner-timer">Исчезнет через <span class="timer-count">2</span> сек</div>
             </div>
         `;
         
@@ -192,8 +223,9 @@ class WheelOfFortune {
             winnerDiv.classList.add('show');
         }, 100);
 
-        let countdown = 5;
+        let countdown = 2;
         const timerElement = winnerDiv.querySelector('.timer-count');
+        
         const countdownInterval = setInterval(() => {
             countdown--;
             timerElement.textContent = countdown;
@@ -209,18 +241,18 @@ class WheelOfFortune {
                     winnerDiv.remove();
                 }
             }, 500);
-        }, 5000);
+        }, this.showWinnerDuration);
     }
 }
 
 let wheel;
 
-function initWheel() {
+function initWheel(classLetter = 'А') {
     setTimeout(() => {
         if (!wheel) {
-            wheel = new WheelOfFortune();
+            wheel = new WheelOfFortune(classLetter);
         } else {
-            wheel.setupCanvas();
+            wheel.updateClass(classLetter);
         }
     }, 100);
 }
@@ -230,7 +262,8 @@ document.addEventListener('DOMContentLoaded', function() {
     if (wheelModal) {
         wheelModal.addEventListener('click', function(e) {
             if (e.target === this) {
-                setTimeout(initWheel, 100);
+                const selectedClass = document.getElementById('selected-class').textContent;
+                setTimeout(() => initWheel(selectedClass), 100);
             }
         });
     }

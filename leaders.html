@@ -85,6 +85,32 @@
                         <h3 class="quiz-title">§ 16. Беларусь в годы Первой мировой войны</h3>
                     </div>
                 </div>
+                 
+                <div class="quiz-card" onclick="showLeaderboard('paragraph_17')">
+                    <div class="quiz-image">
+                        <img src="images/quiz_covers/paragraph17_cover.jpg" alt="Мир в межвоенный период" class="quiz-cover-image">
+                    </div>
+                    <div class="quiz-content">
+                        <h3 class="quiz-title">§ 17. Мир в межвоенный период</h3>
+                    </div>
+                </div>
+
+                <div class="quiz-card" onclick="showLeaderboard('paragraph_18')">
+                    <div class="quiz-image">
+                        <img src="images/quiz_covers/revolution_cover.jpg" alt="Установление советской власти" class="quiz-cover-image">
+                    </div>
+                    <div class="quiz-content">
+                       <h3 class="quiz-title">§ 18. Установление советской власти в Беларуси</h3>
+                    </div>
+                </div>
+                <div class="quiz-card" onclick="showLeaderboard('paragraph_19')">
+    <div class="quiz-image">
+        <img src="images/quiz_covers/paragraph19_cover.jpg" alt="Страны Европы и США" class="quiz-cover-image">
+    </div>
+    <div class="quiz-content">
+        <h3 class="quiz-title">§ 19. Страны Европы и США в 1920-1930-е годы</h3>
+    </div>
+</div>
             </div>
 
             <div class="admin-panel">
@@ -253,20 +279,32 @@
     </footer>
 
     <script>
-        const quizDatabase = {
-            paragraph_14: {
-                title: "§ 14. Развитие культуры Беларуси в XIX — начале ХХ в.",
-                coverImage: "images/quiz_covers/culture_cover.jpg"
-            },
-            paragraph_15: {
-                title: "§ 15. Первая мировая война как рубежный период мировой истории",
-                coverImage: "images/quiz_covers/medieval_cover.jpg"
-            },
-            paragraph_16: {
-                title: "§ 16. Беларусь в годы Первой мировой войны",
-                coverImage: "images/quiz_covers/empire_cover.jpg"
-            }
-        };
+const quizDatabase = {
+    paragraph_14: {
+        title: "§ 14. Развитие культуры Беларуси в XIX — начале ХХ в.",
+        coverImage: "images/quiz_covers/culture_cover.jpg"
+    },
+    paragraph_15: {
+        title: "§ 15. Первая мировая война как рубежный период мировой истории",
+        coverImage: "images/quiz_covers/medieval_cover.jpg"
+    },
+    paragraph_16: {
+        title: "§ 16. Беларусь в годы Первой мировой войны",
+        coverImage: "images/quiz_covers/empire_cover.jpg"
+    },
+    paragraph_17: {
+        title: "§ 17. Мир в межвоенный период",
+        coverImage: "images/quiz_covers/paragraph17_cover.jpg"
+    },
+    paragraph_18: {
+        title: "§ 18. Установление советской власти в Беларуси",
+        coverImage: "images/quiz_covers/revolution_cover.jpg"
+    },
+    paragraph_19: {
+        title: "§ 19. Страны Европы и США в 1920-1930-е годы",
+        coverImage: "images/quiz_covers/paragraph19_cover.jpg"
+    }
+};
 
         const firebaseConfig = {
             apiKey: "AIzaSyDk1oxsi6xZVv1yf_-8SpOk4b1lapgr6bI",
@@ -491,44 +529,50 @@
             }
         }
 
-        async function clearAllResults() {
-            try {
-                console.log('🔄 Начало очистки всех результатов...');
-                
-                const snapshot = await db.collection('quizResults').get();
-                const batch = db.batch();
-                
-                snapshot.forEach(doc => {
-                    batch.delete(doc.ref);
-                });
-                
-                await batch.commit();
-                
-                localStorage.removeItem('quizLeaders');
-                
-                console.log('✅ Все результаты успешно очищены');
-                hideConfirmClearModal();
-                
-                alert('✅ Все результаты рейтинга были успешно очищены!');
-                
-                if (document.getElementById('leaderboard-screen').classList.contains('active')) {
-                    const currentQuiz = document.getElementById('quiz-title').textContent;
-                    if (currentQuiz.includes('14')) {
-                        loadLeadersForQuiz('paragraph_14');
-                    } else if (currentQuiz.includes('15')) {
-                        loadLeadersForQuiz('paragraph_15');
-                    } else if (currentQuiz.includes('16')) {
-                        loadLeadersForQuiz('paragraph_16');
-                    }
-                } else {
-                    location.reload();
-                }
-                
-            } catch (error) {
-                console.error('❌ Ошибка очистки Firebase:', error);
-                alert('❌ Ошибка при очистке данных: ' + error.message);
+async function clearAllResults() {
+    try {
+        console.log('🔄 Начало очистки всех результатов...');
+        
+        const snapshot = await db.collection('quizResults').get();
+        const batch = db.batch();
+        
+        snapshot.forEach(doc => {
+            batch.delete(doc.ref);
+        });
+        
+        await batch.commit();
+        
+        localStorage.removeItem('quizLeaders');
+        
+        console.log('✅ Все результаты успешно очищены');
+        hideConfirmClearModal();
+        
+        alert('✅ Все результаты рейтинга были успешно очищены!');
+        
+        if (document.getElementById('leaderboard-screen').classList.contains('active')) {
+            const currentQuiz = document.getElementById('quiz-title').textContent;
+            if (currentQuiz.includes('14')) {
+                loadLeadersForQuiz('paragraph_14');
+            } else if (currentQuiz.includes('15')) {
+                loadLeadersForQuiz('paragraph_15');
+            } else if (currentQuiz.includes('16')) {
+                loadLeadersForQuiz('paragraph_16');
+            } else if (currentQuiz.includes('17')) {
+                loadLeadersForQuiz('paragraph_17');
+            } else if (currentQuiz.includes('18')) {
+                loadLeadersForQuiz('paragraph_18');
+            } else if (currentQuiz.includes('19')) {
+                loadLeadersForQuiz('paragraph_19');
             }
+        } else {
+            location.reload();
         }
+        
+    } catch (error) {
+        console.error('❌ Ошибка очистки Firebase:', error);
+        alert('❌ Ошибка при очистке данных: ' + error.message);
+    }
+}
 
         function showClassSelector() {
             document.getElementById('class-selector-modal').style.display = 'block';
@@ -545,10 +589,11 @@
         }
 
         function showWheelModal() {
+            const selectedClass = document.getElementById('selected-class').textContent;
             document.getElementById('wheel-modal').style.display = 'block';
             setTimeout(() => {
                 if (typeof initWheel === 'function') {
-                    initWheel();
+                    initWheel(selectedClass);
                 }
             }, 300);
         }

@@ -85,6 +85,30 @@
                         <h3 class="quiz-title">§ 16. Беларусь в годы Первой мировой войны</h3>
                     </div>
                 </div>
+                                <div class="quiz-card" onclick="startQuiz('paragraph_17')">
+    <div class="quiz-image">
+        <img src="images/quiz_covers/paragraph17_cover.jpg" alt="Мир в межвоенный период" class="quiz-cover-image">
+    </div>
+    <div class="quiz-content">
+        <h3 class="quiz-title">§ 17. Мир в межвоенный период</h3>
+    </div>
+</div>
+<div class="quiz-card" onclick="showLeaderboard('paragraph_18')">
+    <div class="quiz-image">
+        <img src="images/quiz_covers/revolution_cover.jpg" alt="Установление советской власти" class="quiz-cover-image">
+    </div>
+    <div class="quiz-content">
+        <h3 class="quiz-title">§ 18. Установление советской власти в Беларуси</h3>
+    </div>
+</div>
+<div class="quiz-card" onclick="startQuiz('paragraph_19')">
+    <div class="quiz-image">
+        <img src="images/quiz_covers/paragraph19_cover.jpg" alt="Страны Европы и США" class="quiz-cover-image">
+    </div>
+    <div class="quiz-content">
+        <h3 class="quiz-title">§ 19. Страны Европы и США в 1920-1930-е годы</h3>
+    </div>
+</div>
             </div>
         </div>
 
@@ -332,14 +356,15 @@
             showWheelModal();
         }
 
-        function showWheelModal() {
-            document.getElementById('wheel-modal').style.display = 'block';
-            setTimeout(() => {
-                if (typeof initWheel === 'function') {
-                    initWheel();
-                }
-            }, 300);
+function showWheelModal() {
+    const selectedClass = document.getElementById('selected-class').textContent;
+    document.getElementById('wheel-modal').style.display = 'block';
+    setTimeout(() => {
+        if (typeof initWheel === 'function') {
+            initWheel(selectedClass);
         }
+    }, 300);
+}
 
         function closeWheelModal() {
             document.getElementById('wheel-modal').style.display = 'none';
