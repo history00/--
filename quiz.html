@@ -6,6 +6,7 @@
     <title>Викторины</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="quiz-style.css">
+    <link rel="stylesheet" href="wheel.css">
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 </head>
@@ -31,7 +32,7 @@
                 <div class="logo-icon">📜</div>
                 <div class="logo-text">
                     <h1>Викторины</h1>
-                    <p>11 класс - История и Обществоведение</p>
+                    <p>11 класс - История</p>
                 </div>
             </div>
             
@@ -109,6 +110,63 @@
         <h3 class="quiz-title">§ 19. Страны Европы и США в 1920-1930-е годы</h3>
     </div>
 </div>
+<div class="quiz-card" onclick="startQuiz('paragraph_20')">
+    <div class="quiz-image">
+        <img src="images/quiz_covers/paragraph20_cover.jpg" alt="Деколонизация" class="quiz-cover-image">
+    </div>
+    <div class="quiz-content">
+        <h3 class="quiz-title">§ 20. Национально-освободительные движения и деколонизация</h3>
+    </div>
+</div>
+
+<div class="quiz-card" onclick="startQuiz('paragraph_21')">
+    <div class="quiz-image">
+        <img src="images/quiz_covers/paragraph21_cover.jpg" alt="СССР 1917-1939" class="quiz-cover-image">
+    </div>
+    <div class="quiz-content">
+        <h3 class="quiz-title">§ 21. Советская Россия и СССР в 1917-1939 гг.</h3>
+    </div>
+</div>
+<div class="quiz-card" onclick="startQuiz('paragraph_22')">
+    <div class="quiz-image">
+        <img src="images/quiz_covers/paragraph22_cover.jpg" alt="Белорусская государственность" class="quiz-cover-image">
+    </div>
+    <div class="quiz-content">
+        <h3 class="quiz-title">§ 22. Становление белорусской государственности</h3>
+    </div>
+</div>
+<div class="quiz-card" onclick="startQuiz('paragraph_23')">
+    <div class="quiz-image">
+        <img src="images/quiz_covers/paragraph23_cover.jpg" alt="Социально-экономическое развитие БССР" class="quiz-cover-image">
+    </div>
+    <div class="quiz-content">
+        <h3 class="quiz-title">§ 23. Социально-экономическое и общественно-политическое развитие БССР в 1920-1930-е годы</h3>
+    </div>
+</div>
+<div class="quiz-card" onclick="startQuiz('paragraph_24')">
+    <div class="quiz-image">
+        <img src="images/quiz_covers/paragraph24_cover.jpg" alt="Западная Беларусь в составе Польши" class="quiz-cover-image">
+    </div>
+    <div class="quiz-content">
+        <h3 class="quiz-title">§ 24. Западная Беларусь в составе Польши (1921-1939 гг.)</h3>
+    </div>
+</div>
+<div class="quiz-card" onclick="startQuiz('paragraph_25')">
+    <div class="quiz-image">
+        <img src="images/quiz_covers/paragraph25_cover.jpg" alt="Развитие культуры 1920-30-е" class="quiz-cover-image">
+    </div>
+    <div class="quiz-content">
+        <h3 class="quiz-title">§ 25. Развитие культуры в 1920-1930-е годы</h3>
+    </div>
+</div>
+<div class="quiz-card" onclick="startQuiz('paragraph_26')">
+    <div class="quiz-image">
+        <img src="images/quiz_covers/paragraph26_cover.jpg" alt="Международные отношения 1930-е" class="quiz-cover-image">
+    </div>
+    <div class="quiz-content">
+        <h3 class="quiz-title">§ 26. Международные отношения в 1930-е годы и начало Второй мировой войны</h3>
+    </div>
+</div>
             </div>
         </div>
 
@@ -123,10 +181,10 @@
                             <span id="progress-text">Вопрос 1/26</span>
                         </div>
                     </div>
-                    <div class="quiz-timer" id="quiz-timer">
-                        <span>⏱️</span>
-                        <span id="timer">0 сек</span>
-                    </div>
+<div class="quiz-timer" id="quiz-timer">
+    <span></span>
+    <span id="timer">0 сек</span>
+</div>
                 </div>
 
                 <div class="question-container">
@@ -290,7 +348,7 @@
 <div id="wheel-modal" class="modal">
     <div class="modal-content wheel-modal-content">
         <div class="modal-header">
-            <h3>🎡 Колесо фортуны - 11<span id="selected-class">А</span></h3>
+            <h3>🎡 Колесо активностей - 11<span id="selected-class">А</span></h3>
             <span class="close-modal" onclick="closeWheelModal()">&times;</span>
         </div>
         <div class="wheel-container">
